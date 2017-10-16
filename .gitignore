@@ -1,3 +1,7 @@
+# Emacs autosave
+ *~
+\#*\#
+
 # History files
 .Rhistory
 .Rapp.history
