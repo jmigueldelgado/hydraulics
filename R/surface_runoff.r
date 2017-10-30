@@ -1,6 +1,10 @@
-
+#' time of concentration upstream of sewers in minutes, based on the kinematic wave, chow 501
+#' @param L length of overland flow, m
+#' @param n is the manning roughness coefficient
+#' @param i is the rainfall intensity, mm/h
+#' @param S average overland slope m/m
 #' @export
-inlet_time <- function(L,n,i,S) ### time of concentration upstream of sewers, based on kinematic wave, chow 501, in minutes
+inlet_time <- function(L,n,i,S) 
 {
     L <- L*3.281 ### meter to feet
     i <- i*0.0394 ### mm to inch

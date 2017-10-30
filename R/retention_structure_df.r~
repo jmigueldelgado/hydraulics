@@ -1,13 +1,13 @@
 #' Virtual volume in retention structure
-#' @param Qin is a SpatialPointsDataFrame inflow to structure in step i
-#' @param Qoverflow is a SpatialPointsDataFrame unregulated overflow from structure in step i
+#' @param Qin is a DataFrame inflow to structure in step i
+#' @param Qoverflow is a DataFrame unregulated overflow from structure in step i
 #' @param Vvirtual is the virtual volume in step i, including overflow volume
 #' @param Vprevious is the volume in step i-1
-#' @param param.df is a SpatialPointsDataFrame of parameters of each subbasin, including df (time step), Vmax (maximum allowable volume of structure) and Qoutmax (maximum regulated allowable outflow from structure)
+#' @param param.df is a DataFrame of parameters of each subbasin, including df (time step), Vmax (maximum allowable volume of structure) and Qoutmax (maximum regulated allowable outflow from structure)
 #' @export
-Virtual_retention <- function(Qin,Qoverflow,Vprevious,parm.df)
+Virtual_retention_df <- function(Qin,Qoverflow,Vprevious,parm.df)
 {
-    Vvirtual <- (Qin-parm.df$Qoutmax)*parm.df$dt + Vprevious
+    Vvirtual <- (Qin-parm.df$Qoutmax)*parm.df@data$dt + Vprevious
     return(Vvirtual)
 }
 
@@ -37,7 +37,7 @@ Actual_retention <- function(Qin,Qoverflow,Vprevious,parm.df)
 #' @param Vprevious is the volume in step i-1
 #' @param param.df is a SpatialPointsDataFrame of parameters of each subbasin, including df (time step), Vmax (maximum allowable volume of structure) and Qoutmax (maximum regulated allowable outflow from structure)
 #' @export
-Qoutflow_ret_str <- function(Qin,Vprevious,Vvirtual,parm.df)
+Qoutflow_ret_str <- function(Qin,Qout,Vprevious,Vvirtual,parm.df)
 {
     #'case 1 Vvirtual==0
     V <- 0

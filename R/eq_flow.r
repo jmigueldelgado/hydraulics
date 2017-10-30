@@ -62,6 +62,22 @@ circular_depth <- function(alpha,D)
 }
 
 #' @export
+rectangular_wet_perimeter <- function(h,b)
+{
+    Pw=b+2*h
+    return(Pw)
+}
+
+
+#' @export
+rectangular_hydraulic_radius <- function(Ah,Pw)
+{
+    Rh <- Ah/Pw
+    return(Rh)
+}
+
+
+#' @export
 circular_hydraulic_radius <- function(D,alpha) ## D is diameter, alpha is wetted angle
 {
     R <- (D/4)*(1-sin(2*alpha)/(2*alpha))
