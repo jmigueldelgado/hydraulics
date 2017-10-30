@@ -35,14 +35,11 @@ IDF <- function(D,T)
     return(P)
 }
 
-#' @param parm.df is SpatialPointsDataFrame pointing to the centroids of the catchment and containing C factor, n, initial loss, permanent loss, dt in s and the id of the upstream subbasin
-#' @param I is the rainfall intensity in mm/h for time step i
-#' @return he is the effective runoff for time step in i
+#' @param soil_state is DataFrame containing C factor, initial loss, dt and intensity is the rainfall intensity in mm/h for time step i
+#' @return out is a dataframe with updated column Qrunoff
 #' @export
-loss_model <- function(I,parm.df)
+loss_model <- function(soil_state)
 {
-    x <- parm.df
-    he@data <- ((I*parm.df@data$dt/3600)-parm.df@data$hi)*parm.df@data$c.factor
-    he[he<0] <- 0
-    return(he)
+    out <- soil_state %>% mutate(Qrunoff=ifelse((intensity*dt/3600-hi)<0,0,(intensity*dt/3600-hi)*c.factor))
+    return(out)
 }
