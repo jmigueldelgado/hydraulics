@@ -21,7 +21,7 @@ kinematic_wave_celerity_constant_B <- function(B,dQdy) ### page 284 chow
 Q_out_muskingum <- function(state)
 {
 
-    out <- mutate(state,Cx=(dt/2-K*X)/(dt/2+K*(1-X)),Cy=1/(dt/2+K*(1-X)),out=Cx*Qin+Cy*Vprevious)
+    out <- mutate(state,Cx=(dt/2-K*X)/(dt/2+K*(1-X)),Cy=1/(dt/2+K*(1-X)),Qout=Cx*Qin+Cy*Vprevious)
 
     return(out)
 }

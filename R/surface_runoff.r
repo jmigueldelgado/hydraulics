@@ -35,11 +35,11 @@ IDF <- function(D,T)
     return(P)
 }
 
-#' @param soil_state is DataFrame containing C factor, initial loss, dt and intensity is the rainfall intensity in mm/h for time step i
-#' @return out is a dataframe with updated column Qrunoff
+#' @param state is DataFrame containing C factor, initial loss, dt and intensity is the rainfall intensity in mm/h for time step i
+#' @return out is a dataframe with updated column Qin, meaning the inflow to the drainage network which shall be routed with a routing algorith
 #' @export
-loss_model <- function(soil_state)
+loss_model <- function(state)
 {
-    out <- soil_state %>% mutate(Qrunoff=ifelse((intensity*dt/3600-hi)<0,0,(intensity*dt/3600-hi)*c.factor))
+    out <- state %>% mutate(Qin=ifelse((intensity*dt/3600-hi)<0,0,(intensity*dt/3600-hi)*c.factor))
     return(out)
 }
