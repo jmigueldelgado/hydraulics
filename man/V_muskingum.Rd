@@ -4,18 +4,10 @@
 \alias{V_muskingum}
 \title{Stored volume in step i. from the documentation of citydrain 2}
 \usage{
-V_muskingum(Qin, Qe, V, parm.df)
+V_muskingum(state)
 }
 \arguments{
-\item{Qin}{is a SpatialPointsDataFrame inflows to reach in step i}
-
-\item{V}{is a SpatialPointsDataFrame of volumes in reach in step i-1}
-
-\item{parm.df}{is SpatialPointsDataFrame pointing to the centroids of the catchment and containing dt, K, X and the id of the upstream subbasin}
-
-\item{Qout}{is a SpatialPointsDataFrame of outflows from reach in step i}
-
-\item{i}{is the time step}
+\item{state}{is a data frame of colums: Qin column of inflows to reach in step i; Vprevious is the column of volumes in reach or basin in step i-1; Qout is the column of outflows from reach in step i; dt, K, X are timestep, K and X as in muskingum}
 }
 \description{
 Stored volume in step i. from the documentation of citydrain 2

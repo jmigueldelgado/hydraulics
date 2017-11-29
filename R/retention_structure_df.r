@@ -29,7 +29,7 @@ Actual_retention <- function(ret_str_state)
 {
     out <- ret_str_state %>%
         mutate(V=ifelse(Vvirtual<=0, 0,V)) %>%
-        mutate(V=ifelse(Vvirtual > 0, (Qin-Qoutmax)*dt+Vprevious,V)) %>%
+        mutate(V=ifelse(Vvirtual > 0, (Qin-Qoutmax-Qoverflow)*dt+Vprevious,V)) %>%
         mutate(V=ifelse(Vvirtual>Vmax, Vmax,V))
 
     return(out)

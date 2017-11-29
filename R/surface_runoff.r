@@ -40,6 +40,6 @@ IDF <- function(D,T)
 #' @export
 loss_model <- function(state)
 {
-    out <- state %>% mutate(Qin=ifelse((intensity*dt/3600-hi)<0,0,(intensity*dt/3600-hi)*c.factor))
+    out <- state %>% mutate(Qin=ifelse((intensity/3600-hi)<0,0,0.001*area*(intensity/3600-hi)*c.factor))
     return(out)
 }
