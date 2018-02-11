@@ -2,7 +2,7 @@
 
 export(Actual_retention)
 export(IDF)
-export(Q_out_muskingum)
+export(Q_muskingum)
 export(Qoutflow_ret_str)
 export(Qoverflow_ret_str)
 export(V_muskingum)

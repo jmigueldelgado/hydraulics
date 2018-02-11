@@ -18,12 +18,12 @@ kinematic_wave_celerity_constant_B <- function(B,dQdy) ### page 284 chow
 #' Muskingum's effluent in pipe or catchment reach as in the documentation of citydrain 2
 #' @param state is a data frame of colums: Qin column of inflows to reach in step i; Vprevious is the column of volumes in reach or basin in step i-1; Qout is the column of outflows from reach in step i; dt, K, X are timestep, K and X as in muskingum
 #' @export
-Q_out_muskingum <- function(state)
+Q_muskingum <- function(state)
 {
 
     out <- mutate(state,Cx=(dt/2-K*X)/(dt/2+K*(1-X)),Cy=1/(dt/2+K*(1-X)),Qout=Cx*Qin+Cy*Vprevious)
 
-    return(out)
+    return(select(out,-Cx,-Cy))
 }
 
 #' Stored volume in step i. from the documentation of citydrain 2
@@ -31,7 +31,7 @@ Q_out_muskingum <- function(state)
 #' @export
 V_muskingum <- function(state)
 { 
-    out <- mutate(state,V=(Qin-Qout)*dt[1]+Vprevious)
+    out <- mutate(state,V=(Qin-Qout)*dt+Vprevious)
     return(out)
 }
 
