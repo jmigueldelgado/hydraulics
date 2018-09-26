@@ -1,8 +1,26 @@
 #' potential infiltration rate ft
 #' export
-ft <- function(K,phi,dTheta,Ft)
+calc_ft <- function(K,phi,dTheta,Ft)
 {
   return(K*(phi*dTheta/Ft+1))
+}
+
+
+calc_Ft <- function(Ft0,ft0,phi,dTheta,K,dt,i_t)
+{
+  ft=calc_ft(K,phi,dTheta,Ft0)
+
+  if(ft<=i_h) {
+    Ft = case1(Ft0,ft0,phi,dTheta,K,dt)
+  } else {
+    if(calc_ft(K,phi,dTheta,Ft0+i_t*dt)>i_t) {
+      Ft = case2(Ft0,dt,i_t)
+    } else {
+      Ft=case3(Ft0,ft0,phi,dTheta,K,dt,i_t)
+    }
+  }
+
+  return(Ft)
 }
 
 #' cumulative infiltration rate *F*
@@ -16,7 +34,7 @@ ft <- function(K,phi,dTheta,Ft)
 case1 <- function(Ft0,ft0,phi,dTheta,K,dt)
 {
   fun <- function(Ft) Ft-Ft0-phi*dTheta*log((Ft+phi*dTheta)/(Ft0+phi*dTheta))-K*dt
-  Froot <- uniroot(fun,c(0,10*(Ft0+ft0))$root
+  Froot <- uniroot(fun,c(0,10*(Ft0+ft0)))$root
   return(Froot)
 }
 
@@ -24,18 +42,19 @@ case1 <- function(Ft0,ft0,phi,dTheta,K,dt)
 #' if ft is greater than i_t
 #' @import rootSolve
 #' @export
-case2 <- function(Ft0,i_t,dt)
+case2 <- function(Ft0,dt,i_t)
 {
   Ft = Ft0+i_t*dt
-  if(ft(K,phi,dTheta,Ft)>i_t) return(Ft)
-  else case3()
-
+  return(Ft)
 }
 
-case3 <- function()
+case3 <- function(Ft0,ft0,phi,dTheta,K,dt,i_t)
 {
   Fp = (K*phi*dTheta)/(i_t-K)
-
+  ponding_time = (Fp-Ft0)/i_t
+  fun <- function(Ft) Ft-Fp-phi*dTheta*log((Ft+phi*dTheta)/(Fp+phi*dTheta))-K*(dt-ponding_time)
+  Froot=uniroot(fun,c(0,10*(Fp+ft0)))$root
+  return(Froot)
 }
 
 #' cumulative infiltration rate *F*
