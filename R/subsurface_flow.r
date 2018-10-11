@@ -10,7 +10,7 @@ calc_Ft <- function(Ft0,ft0,phi,dTheta,K,dt,i_t)
 {
   ft=calc_ft(K,phi,dTheta,Ft0)
 
-  if(ft<=i_h) {
+  if(ft<=i_t) {
     Ft = case1(Ft0,ft0,phi,dTheta,K,dt)
   } else {
     if(calc_ft(K,phi,dTheta,Ft0+i_t*dt)>i_t) {
@@ -40,7 +40,6 @@ case1 <- function(Ft0,ft0,phi,dTheta,K,dt)
 
 #' cumulative infiltration rate *F*
 #' if ft is greater than i_t
-#' @import rootSolve
 #' @export
 case2 <- function(Ft0,dt,i_t)
 {
@@ -48,23 +47,30 @@ case2 <- function(Ft0,dt,i_t)
   return(Ft)
 }
 
+#' cumulative infiltration rate *F*
+#' if ft is less than or equal to i_t
+#' @import rootSolve
+#' @param K hydraulic conductivity of the soil (parameter see chow page 115)
+#' @param phi wetting front capillary pressure head (parameter see chow page 115)
+#' @param dTheta difference between initial and final moisture contents of the soil
+#' @param F0 cumulative infiltration. Obtain from initial conditions or previous iteration
+#' @export
 case3 <- function(Ft0,ft0,phi,dTheta,K,dt,i_t)
 {
   Fp = (K*phi*dTheta)/(i_t-K)
   ponding_time = (Fp-Ft0)/i_t
   fun <- function(Ft) Ft-Fp-phi*dTheta*log((Ft+phi*dTheta)/(Fp+phi*dTheta))-K*(dt-ponding_time)
+  if(is.infinite(ft0)) ft0 <- 999999
   Froot=uniroot(fun,c(0,10*(Fp+ft0)))$root
+
   return(Froot)
 }
 
-#' cumulative infiltration rate *F*
-#' if ft is less than or equal to i_t
-#' @import rootSolve
 
 
 #' effective saturation
-#' export
-se <- function(theta,theta_r,porosity)
+#' @export
+calc_se <- function(theta,theta_r,porosity)
 {
     se <- (theta-theta_r)/(porosity-theta_r)
     if(se<0) se <- 0
@@ -76,7 +82,7 @@ se <- function(theta,theta_r,porosity)
 #' @param se is the effective saturation and can be obtained by function set
 #' @param theta_r is the residual moisture content of the soil after it has been thoroughly drained (in this case a soil parameter that can be obtained from a table)
 #' @param porosity is the porosity of the soil
-dTheta <- function(se,theta_r,porosity)
+calc_dTheta <- function(se,theta_r,porosity)
 {
 return((1-se)*(porosity-theta_r))
 }
@@ -86,7 +92,7 @@ return((1-se)*(porosity-theta_r))
 #' @param lambda is obtained in lab by draining a soil in stages
 #' @param se is the effective saturation given above
 #' export
-phi <- function(se,phi_b,lambda)
+calc_phi <- function(se,phi_b,lambda)
 {
 return(phi_b*se^(-1/lambda))
 }
