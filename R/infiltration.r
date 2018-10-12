@@ -32,13 +32,24 @@ calc_Ft <- function(Ft0,phi,dTheta,K,dt,i_t)
   return(Ft)
 }
 
+
+#' wetting front depth *L*
+#' @param dTheta difference between porosity and initial soil moisture content
+#' @param Ft cumulative infiltration in mm
+#' @export
+calc_L <- function(Ft,dTheta)
+{
+return(Ft/dTheta)
+}
+
+
 #' cumulative infiltration rate *Ft*
 #' if ft is less than or equal to i_t
 #' @import rootSolve
 #' @param K hydraulic conductivity of the soil (parameter see chow page 115)
 #' @param phi wetting front capillary pressure head (parameter see chow page 115)
 #' @param dTheta difference porosity and initial soil moisture content
-#' @param F0 cumulative infiltration. Obtain from initial conditions or previous iteration
+#' @param Ft0 cumulative infiltration. Obtain from initial conditions or previous iteration
 #' @export
 case1 <- function(Ft0,ft0,phi,dTheta,K,dt)
 {
@@ -62,7 +73,7 @@ case2 <- function(Ft0,dt,i_t)
 #' @param K hydraulic conductivity of the soil (parameter see chow page 115)
 #' @param phi wetting front capillary pressure head (parameter see chow page 115)
 #' @param dTheta difference porosity and initial soil moisture content
-#' @param F0 cumulative infiltration. Obtain from initial conditions or previous iteration
+#' @param Ft0 cumulative infiltration. Obtain from initial conditions or previous iteration
 #' @export
 case3 <- function(Ft0,ft0,phi,dTheta,K,dt,i_t)
 {
