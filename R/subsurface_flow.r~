@@ -1,6 +1,0 @@
-#' infiltration fate *f*
-#' @param K
-#' @param phi
-#' @param dTheta
-#' @param F
-f <- function(K,phi,dTheta,F)
