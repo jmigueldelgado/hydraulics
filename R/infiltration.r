@@ -2,7 +2,14 @@
 #' @export
 calc_ft <- function(K,phi,dTheta,Ft)
 {
-  return(K*(phi*dTheta/Ft+1))
+    if(dTheta==0)
+    {
+        ft <- 0
+    } else
+    {
+        ft <- K*(phi*dTheta/Ft+1) 
+    }
+  return(ft)
 }
 
 #' cumulative infiltration Ft
@@ -53,9 +60,9 @@ return(Ft/dTheta)
 #' @export
 case1 <- function(Ft0,ft0,phi,dTheta,K,dt)
 {
-  fun <- function(Ft) Ft-Ft0-phi*dTheta*log((Ft+phi*dTheta)/(Ft0+phi*dTheta))-K*dt
-  Froot <- uniroot(fun,c(0,10*(Ft0+ft0)))$root
-  return(Froot)
+    fun <- function(Ft) Ft-Ft0-phi*dTheta*log((Ft+phi*dTheta)/(Ft0+phi*dTheta))-K*dt
+    Froot <- uniroot(fun,c(0,10*(Ft0+K*dt)))$root
+    return(Froot)
 }
 
 #' cumulative infiltration rate *F*
